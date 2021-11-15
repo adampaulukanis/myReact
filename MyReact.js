@@ -38,7 +38,7 @@ export function useEffect(callback, dependencies) {
   const parent = globalParent;
   globalId++;
 
-  return (() => {
+  ;(() => {
     const { cache } = componentState.get(parent);
     if (cache[id] == null) { // Used for the first time
       cache[id] = { dependencies: undefined };
@@ -53,6 +53,30 @@ export function useEffect(callback, dependencies) {
       cache[id].cleanup = callback();
       cache[id].dependencies = dependencies;
     }
+  })();
+}
+
+export function useMemo(callback, dependencies) {
+  const id = globalId;
+  const parent = globalParent;
+  globalId++;
+
+  return (() => {
+    const { cache } = componentState.get(parent);
+    if (cache[id] == null) { // Used for the first time
+      cache[id] = { dependencies: undefined };
+    }
+
+    const dependenciesChanged = dependencies == null || dependencies.some((dependency, i) => {
+      return (cache[id].dependencies == null || cache[id].dependencies[i] !== dependency);
+    });
+
+    if (dependenciesChanged) {
+      cache[id].value = callback();
+      cache[id].dependencies = dependencies;
+    }
+
+    return cache[id].value;
   })();
 }
 
