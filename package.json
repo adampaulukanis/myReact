@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/adampaulukanis/myReact/issues"
   },
-  "homepage": "https://github.com/adampaulukanis/myReact#readme"
+  "homepage": "https://github.com/adampaulukanis/myReact#readme",
+  "devDependencies": {
+    "serve": "^13.0.2"
+  }
 }
